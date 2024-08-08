@@ -4,4 +4,5 @@
 
 export { LocationService } from './lib/services/location/location.service'
 export { PrivacyConfigurationComponent } from './lib/components/privacy-configuration/privacy-configuration.component'
+export * from './lib/services/auth.service';
 export * from './lib/privacy-toolkit.module'

@@ -18,7 +18,7 @@ export const en: Translation = {
       locationOption: {
         simple: {
           title: 'Service quality',
-          subtitle: 'Choose to what degree your location data ',
+          subtitle: 'Choose to what degree plus IVE connection',
           description:
             'Choose to what degree your location data is used by the underlying service. ',
           detailDescription:

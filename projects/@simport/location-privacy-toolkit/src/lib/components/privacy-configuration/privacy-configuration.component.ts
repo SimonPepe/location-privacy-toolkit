@@ -19,6 +19,8 @@ import { LocationOptionUtility } from '../../services/location-management/locati
 import { translations } from '../../assets/i18n/i18n'
 import { TranslateService } from '@ngx-translate/core'
 import { PrivacyConfigurationSharingComponent } from '../privacy-configuration-sharing/privacy-configuration-sharing.component'
+import { AuthService } from '../../services/auth.service'
+
 
 @Component({
   selector: 'privacy-configuration',
@@ -52,7 +54,8 @@ export class PrivacyConfigurationComponent implements OnInit {
     private locationManagementService: LocationManagementService,
     private modalController: ModalController,
     private popoverCtrl: PopoverController,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private authService: AuthService // Inject AuthService
   ) {
     this.locationManagementService.locationOptions.subscribe(
       (newOptions: LocationOption[]) => {
@@ -173,7 +176,37 @@ export class PrivacyConfigurationComponent implements OnInit {
     await modal.present()
   }
 
-  onLocationOptionChange(option: LocationOption) {
+  async onLocationOptionChange(option: LocationOption) {
+    console.log(`Slider value for ${option.type.id}: ${option.value}`);
+    this.authService.logServerAddress(); 
+
+
+    // Example API call to the IVE
+    if (this.authService.getToken() == '') {
+      // Perform login if not already logged in
+      try {
+        await this.authService.login('admin', 'pass').toPromise();
+        console.log('Logged in successfully!');
+        await this.authService.connectSocket(); 
+        // Make the API call after login if needed
+      } catch (error) {
+        console.error('Login failed', error);
+        return; // Exit if login fails
+      }
+    }
+
+    if(option.value == 0){
+      this.authService.setScenario(161, "Münster (city center)");
+      this.authService.setLocation(172, "outdoor", "Fürstenberghaus");
+    }else if(option.value == 1){
+      this.authService.setScenario(1484, "simport demo");
+      this.authService.setLocation(1485, "outdoor", "Frauenstraße");
+    }else if(option.value == 2){
+      this.authService.setScenario(1484, "simport demo");
+      this.authService.setLocation(1733, "outdoor", "Hauptbahnhof");
+    }
+
+
     if (option.type.id == LocationOptionTypeIdentifier.simple) {
       // if simple-options were changed, adjust underlying expert-options accordingly
       const newOptions = this.locationOptions

@@ -77,7 +77,7 @@ export class PrivacyConfigurationHistoryComponent
   ngAfterViewInit() {
     this.map = new maplibreGl.Map({
       container: this.mapContainer.nativeElement,
-      style: `https://demotiles.maplibre.org/style.json`,
+      style: 'https://tiles.beemo.eu/styles/default/style.json', //`https://demotiles.maplibre.org/style.json`,
       center: [0, 0],
       zoom: 0,
     })

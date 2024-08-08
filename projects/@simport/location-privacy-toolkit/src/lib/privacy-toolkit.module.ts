@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { PrivacyConfigurationComponent } from './components/privacy-configuration/privacy-configuration.component'
@@ -10,6 +10,7 @@ import { PrivacyConfigurationOptionComponent } from './components/privacy-config
 import { PrivacyConfigurationHistoryComponent } from './components/privacy-configuration-history/privacy-configuration-history.component'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { PrivacyConfigurationSharingComponent } from './components/privacy-configuration-sharing/privacy-configuration-sharing.component'
+import { AuthService } from './services/auth.service'; // Import AuthService
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http)
@@ -27,6 +28,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     IonicModule,
     FormsModule,
     BrowserModule,
+    HttpClientModule, // Add HttpClientModule
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -36,6 +38,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       isolate: true,
     }),
   ],
+  providers: [AuthService], // Register AuthService
   exports: [PrivacyConfigurationComponent, TranslateModule],
 })
 export class PrivacyToolkitModule {}
